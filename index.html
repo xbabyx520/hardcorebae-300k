@@ -73,7 +73,7 @@ a{color:inherit;text-decoration:none}
 .act.on .player .bar i{width:100%}
 .watch{padding:12px 14px 14px;display:flex;flex-direction:column;gap:12px}
 .vtitle{font-weight:700;font-size:16px;line-height:1.4;text-wrap:balance;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.vmeta{font-size:12px;color:var(--ink-2);margin-top:4px}
+.vmeta{font-size:13px;color:var(--ink-2);margin-top:4px}
 .chan{display:flex;align-items:center;gap:10px}
 .chan img{width:42px;height:42px;border-radius:50%;flex:none;border:2px solid var(--ink);background:#fff}
 .chan .who{min-width:0;flex:1}
@@ -108,13 +108,24 @@ a{color:inherit;text-decoration:none}
 .tile img{width:100%;height:100%;object-fit:cover;display:block;border-radius:8px}
 .tile .n{position:absolute;left:3px;bottom:3px;background:var(--paper);color:var(--ink);border:1.5px solid var(--ink);font-family:var(--font-pop);font-size:10px;font-weight:600;padding:0 5px;border-radius:999px;font-variant-numeric:tabular-nums;line-height:1.5}
 .tile.bw img{filter:grayscale(1) contrast(1.05)}
-.tile.bw{z-index:5;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.grid .tile:nth-child(3n+1).bw{transform-origin:left center}
+.grid .tile:nth-child(3n).bw{transform-origin:right center}
+.tile.bw{z-index:5;background:#000;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.tile.bw img{opacity:0;transition:opacity .35s}
+.tile.bw .n{opacity:0;transition:opacity .2s}
+.tile.bw .veil{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-family:var(--font-pop);font-weight:700;font-size:16px;letter-spacing:.04em;transition:opacity .2s;pointer-events:none}
+.tile.bw.hit img,.tile.bw.hit .n{opacity:1}
+.tile.bw.hit .veil{opacity:0}
 .tile.bw .stamp{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
 .tile.bw .stamp b{font-weight:900;color:var(--hot);border:3px solid var(--hot);border-radius:8px;padding:1px 8px;font-size:13px;letter-spacing:.08em;background:rgba(255,255,255,.88);transform:rotate(-12deg) scale(1.7);opacity:0;transition:transform .35s cubic-bezier(.3,1.6,.5,1) .25s,opacity .2s .25s;white-space:nowrap}
 .tile.bw.hit{transform:scale(1.75);box-shadow:5px 5px 0 var(--ink)}
 .tile.bw.hit .stamp b{opacity:1;transform:rotate(-12deg) scale(1)}
-.grid .tile:nth-child(3n+1).bw{transform-origin:left center}
-.grid .tile:nth-child(3n).bw{transform-origin:right center}
+@media (hover:hover) and (pointer:fine){
+  .tile.bw:hover,.tile.bw:focus-visible{transform:scale(1.75);box-shadow:5px 5px 0 var(--ink)}
+  .tile.bw:hover .stamp b,.tile.bw:focus-visible .stamp b{opacity:1;transform:rotate(-12deg) scale(1)}
+  .tile.bw:hover img,.tile.bw:focus-visible img,.tile.bw:hover .n,.tile.bw:focus-visible .n{opacity:1}
+  .tile.bw:hover .veil,.tile.bw:focus-visible .veil{opacity:0}
+}
 .wallend{padding-block:0 4px;text-align:center}
 
 /* ---------- records (act 4) ---------- */
@@ -129,7 +140,7 @@ a{color:inherit;text-decoration:none}
 .rcard .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .rcard .ep{font-family:var(--font-pop);font-weight:700;font-size:15px;line-height:1.3}
 .rec{margin-top:8px}
-.rec .k{font-size:12px;font-weight:500;color:var(--ink-2)}
+.rec .k{font-size:13px;font-weight:500;color:var(--ink-2)}
 .rec .v{font-family:var(--font-pop);font-weight:700;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
 .rec .v small{font-family:var(--font-zh);font-weight:700;font-size:13px;margin-left:2px}
 
@@ -180,7 +191,7 @@ a{color:inherit;text-decoration:none}
 .card .media.big .sticker{font-size:clamp(40px,12vw,58px)}
 .soldstamp{position:absolute;right:14px;bottom:16px;font-weight:900;color:var(--hot);border:3px solid var(--hot);border-radius:8px;padding:2px 10px;font-size:18px;letter-spacing:.1em;background:rgba(255,255,255,.9);transform:rotate(-10deg)}
 .card .cap{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
-.card .cap .when{font-size:12px;font-weight:700;color:var(--ink-2)}
+.card .cap .when{font-size:13px;font-weight:700;color:var(--ink-2)}
 .card .cap p{margin:0;font-weight:700;font-size:15px;line-height:1.45}
 .card .cap a.go{align-self:flex-start;margin-top:auto;font-family:var(--font-pop);font-weight:600;font-size:12px;background:var(--sky);border:2px solid var(--ink);border-radius:999px;padding:2px 10px;box-shadow:2px 2px 0 var(--ink)}
 .shop{display:flex;flex-direction:column;gap:6px}
@@ -195,6 +206,35 @@ a{color:inherit;text-decoration:none}
 .dots i.on{background:var(--hot);transform:scale(1.3)}
 .swipe{text-align:center;padding-top:8px;font-size:12px;font-weight:700;color:var(--ink-2)}
 
+/* ---------- carousel arrows (mouse) ---------- */
+.carwrap{position:relative}
+.arrow{display:none}
+@media (hover:hover) and (pointer:fine){
+  .arrow{display:grid;place-items:center;position:absolute;top:calc(50% - 40px);z-index:3;width:38px;height:38px;border-radius:50%;border:var(--sticker);background:var(--paper);box-shadow:2px 2px 0 var(--ink);font-family:var(--font-pop);font-weight:700;font-size:18px;color:var(--ink);cursor:pointer;padding:0}
+  .arrow.prev{left:6px}
+  .arrow.next{right:6px}
+  .arrow:hover{background:var(--lime)}
+  .arrow:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+  .arrow[disabled]{opacity:.35;cursor:default}
+  .swipe{display:none}
+}
+/* ---------- desktop: phone frame ---------- */
+.deco{display:none}
+@media (min-width:820px){
+  html{scroll-snap-type:none;height:100%}
+  body{height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:56px;padding-inline:24px}
+  main{flex:none;width:400px;height:min(860px,calc(100vh - 48px));overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y proximity;scroll-behavior:smooth;border:4px solid var(--ink);border-radius:46px;box-shadow:8px 8px 0 var(--ink),0 0 0 10px var(--paper),8px 8px 0 10px var(--ink);
+    background:radial-gradient(circle at 1px 1px, rgba(43,25,64,.10) 1px, transparent 1.6px) 0 0/18px 18px,linear-gradient(165deg,#ffd9ee 0%,#eadfff 38%,#d3efff 70%,#f2ffd0 100%);scrollbar-width:none}
+  main::-webkit-scrollbar{display:none}
+  .act{min-height:min(860px,calc(100vh - 48px))}
+  .act + .act{border-top:0}
+  .deco{display:flex;flex-direction:column;gap:14px;max-width:260px}
+  .deco.l{align-items:flex-end;text-align:right}
+  .deco .sticker{font-size:64px}
+  .deco p{margin:0;font-weight:700;font-size:15px;color:var(--ink-2);line-height:1.6}
+  .deco .kbd{display:inline-block;font-family:var(--font-pop);font-weight:600;font-size:13px;background:var(--paper);border:var(--sticker);border-radius:999px;padding:4px 14px;box-shadow:2px 2px 0 var(--ink)}
+}
+@media (min-width:820px) and (max-width:1099px){ .deco{display:none} }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -203,6 +243,11 @@ a{color:inherit;text-decoration:none}
 
 </head>
 <body>
+<aside class="deco l" aria-hidden="true">
+  <span class="pill pink">HardCoreBae ✦ 300K</span>
+  <div class="sticker">好口貝<br>30萬</div>
+  <p>2022 → 2026<br>謝謝一路陪我們走來的你</p>
+</aside>
 <main>
 
 <!-- 第 1 幕 -->
@@ -212,7 +257,7 @@ a{color:inherit;text-decoration:none}
   <div class="col gut">
     <div class="opener">
       <span class="pill">HardCoreBae ✦ since 2022</span>
-      <h1 class="sticker">30萬，一路走來</h1>
+      <h1 class="sticker">30萬，<br>一路走來</h1>
     </div>
     <div class="win">
       <div class="tb" aria-hidden="true"><i></i><i></i><i></i><span>EP.1</span></div>
@@ -277,7 +322,7 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
   <div class="col">
-    <div class="carousel" tabindex="0" aria-label="牙膏事件，往左滑看下一張">
+    <div class="carwrap"><button class="arrow prev" type="button" aria-label="上一張">‹</button><button class="arrow next" type="button" aria-label="下一張">›</button><div class="carousel" tabindex="0" aria-label="牙膏事件，往左滑看下一張">
 
       <article class="card">
         <div class="cbar"><img src="avatar.jpg" alt=""><b>hardcorebae</b><span>牙膏事件 1/5</span></div>
@@ -315,7 +360,7 @@ a{color:inherit;text-decoration:none}
       </article>
 
 
-    </div>
+    </div></div>
     <div class="dots" aria-hidden="true"></div>
     <div class="swipe">← 往左滑看更多</div>
   </div>
@@ -333,7 +378,7 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
   <div class="col">
-    <div class="carousel" tabindex="0" aria-label="霓虹跑山社，往左滑看下一張">
+    <div class="carwrap"><button class="arrow prev" type="button" aria-label="上一張">‹</button><button class="arrow next" type="button" aria-label="下一張">›</button><div class="carousel" tabindex="0" aria-label="霓虹跑山社，往左滑看下一張">
 
       <article class="card">
         <div class="cbar"><img src="avatar.jpg" alt=""><b>hardcorebae</b><span>霓虹跑山社 1/3</span></div>
@@ -353,7 +398,7 @@ a{color:inherit;text-decoration:none}
         <div class="cap"><div class="when">2025・第二屆</div><p>換成迷彩 ＋ 粉紅字，NEONNN RUNNING CLUB。</p></div>
       </article>
 
-    </div>
+    </div></div>
     <div class="dots" aria-hidden="true"></div>
     <div class="swipe">← 往左滑看更多</div>
   </div>
@@ -477,17 +522,22 @@ a{color:inherit;text-decoration:none}
     <span class="pill pink">300,000 ✦</span>
     <h2 class="sticker">謝謝大家</h2>
   </div>
-  <div class="src col gut">數據：115 支公開長片，2026-11-23 YouTube 公開頁面；上片一週數據來自 YouTube 數據分析。<br>破 10 萬／20 萬的影片是依訂閱數跨過門檻的日期推算。<br>訂閱數跳動為動畫效果，不代表當時的實際訂閱數。</div>
 </section>
 
 </main>
+<aside class="deco r" aria-hidden="true">
+  <span class="kbd">滑鼠滾輪 ↓ 往下滑</span>
+  <p>封面點了可以回去看那一集<br>卡片用左右箭頭翻頁</p>
+  <div class="sticker sky" style="font-size:48px">✦ ✦</div>
+</aside>
+
 
 <script>
 const VIDEOS=[[1,"WJ6_9mnHIkc",0],[2,"0nHnNeCw398",0],[3,"2Fhg6c3jlT0",0],[4,"giUH27dN3yQ",0],[5,"eS7I2fbppQ8",0],[6,"IoeF3ZyTDcg",0],[7,"vfMmoNELwIM",0],[8,"8yCptKW-uvA",0],[9,"wqWHW92tIIE",0],[10,"iWk_k0C2Ncc",0],[11,"hHM-K61syA0",0],[12,"Ubs33hIkL2o",0],[13,"2fuglIgdPzY",0],[14,"_GtPX8oTwgU",0],[15,"HDV1bTdFQbw",0],[16,"kumQsJv4plU",0],[17,"8Et92hrtoVo",0],[18,"lTHCS9nfXE8",0],[19,"2R-tGsXIyIs",0],[20,"YD3cOVXz09U",0],[21,"i6XdCvNYrrc",0],[22,"ZOozF963y5s",0],[23,"ZgY2XgaEq-c",1],[24,"6Z0BGG8sVLY",0],[25,"kRSuVSKvFRI",0],[26,"5OEuU2I5izo",0],[27,"TRerWOwjx5M",0],[28,"eRRnPSvTsY8",0],[29,"935SHEV56qQ",0],[30,"tqsCKVY4Ybs",0],[31,"ZYDQZGKtarY",0],[32,"QVwE38PP4_g",0],[33,"erQ_-pQuR08",0],[34,"1LPTp7CMQCs",0],[35,"_EvwKufeQzQ",0],[36,"1oYvaiuqBhA",0],[37,"Bp9Mc5o6TEU",0],[38,"aiNDyJAtJgE",0],[39,"w9pbOgqh9O8",0],[40,"D7AoKcqtk80",0],[41,"5XdM7-d1dOI",0],[42,"HxMbqX_f2m8",0],[43,"UN3GYDpe2VM",0],[44,"xLGubFXYCCg",0],[45,"4Zr8c95JGlE",0],[46,"DsvdhtDzU1k",0],[47,"LzSsO0crAXY",0],[48,"-LXIo1Srpro",0],[49,"_fOTQXoTGFI",0],[50,"REp13ugL1ek",0],[51,"9D1drCgz268",0],[52,"nb_PSA6OTyA",0],[53,"dWk1taCMZaw",0],[54,"XSV9PFHhszo",0],[55,"P74Vcn6-JLk",0],[56,"OU23o309RCA",0],[57,"hT7EB8DpQDY",0],[58,"goMi5HGlnvo",0],[59,"ynq24c0TPmE",0],[60,"Kv0OOEqLOJ4",0],[61,"sQBFtRIm8Uc",0],[62,"XPVinp_sU5Y",0],[63,"E_qDWFA0rJw",0],[64,"CMB0puUFR-k",0],[65,"s5DvpO2gdG0",0],[66,"lyRVpcOunzg",0],[67,"SXqVqGaRqJg",0],[68,"rPC7_juYGms",0],[69,"38OUom-WaiQ",0],[70,"iCEsc055PTs",0],[71,"VvnCMVjX2DY",0],[72,"Sijd_aqNnyM",0],[73,"hzcHAfKxjpc",0],[74,"JTggZIVEtaQ",0],[75,"iif-98UaaaY",0],[76,"mGhhvWjCblM",0],[77,"jFbb1VGqtmg",0],[78,"o5iwJgAFXuI",0],[79,"OlV4CIbH5TU",0],[80,"FOLVdHz-NBw",0],[81,"sF4sg4FaHV0",0],[82,"-d8oBcFQudc",0],[83,"XdvH2OyADyA",0],[84,"FiDS-nfzBCk",0],[85,"2XjTyweuAts",0],[86,"pWJhNeaGQ78",0],[87,"185owO1v3PI",0],[88,"wL63OSIt0fc",0],[89,"5q6Whwz3Pio",0],[90,"--w9iD1cjUo",0],[91,"r6MPMIPjFkc",0],[92,"1X8HC7oUdS8",0],[93,"zLK8Da9z6ds",0],[94,"QdI-oV4kX3g",0],[95,"NjZd6Ol8hDQ",0],[96,"IxrYEdJVZbs",0],[97,"_TUGDvyo5X0",0],[98,"cLlCa4n2HIQ",0],[99,"ERQBsaGIXvI",0],[100,"iOeVmRhu734",0],[101,"sdKuFxJHPdM",0],[102,"xU7towcqQKA",0],[103,"g7KTepFttMk",0],[104,"mMvv16NDuqw",0],[105,"1-YMmWKUpNc",0],[106,"XFQW19kMa54",0],[107,"04Fcf1mcvbM",0],[108,"9XkZd-M1DO8",0],[109,"843JiVnPtCc",0],[110,"VDb76kdo9ZQ",0],[111,"GznEu0pTPUM",0],[112,"bYEKtc6f7n4",0],[113,"Z3WQMIGgWK8",0],[114,"0SbbDEvr3FA",0],[115,"e33uBt-OpLU",0],[116,"lFGm0dxLuac",0]];
 (function(){
   // carousel dots
   document.querySelectorAll('.carousel').forEach(car => {
-    const dots = car.parentElement.querySelector('.dots');
+    const wrap = car.parentElement, dots = wrap.parentElement.querySelector('.dots');
     const cards = car.querySelectorAll('.card');
     if (!dots || !cards.length) return;
     cards.forEach(() => dots.appendChild(document.createElement('i')));
@@ -495,7 +545,14 @@ const VIDEOS=[[1,"WJ6_9mnHIkc",0],[2,"0nHnNeCw398",0],[3,"2Fhg6c3jlT0",0],[4,"gi
       const w = cards[0].offsetWidth + 12;
       const i = Math.min(cards.length-1, Math.round(car.scrollLeft / w));
       dots.querySelectorAll('i').forEach((d,k) => d.classList.toggle('on', k === i));
+      const p = wrap.querySelector('.prev'), n = wrap.querySelector('.next');
+      if (p) p.disabled = car.scrollLeft < 4;
+      if (n) n.disabled = car.scrollLeft + car.clientWidth >= car.scrollWidth - 4;
     }
+    const prev = wrap.querySelector('.prev'), next = wrap.querySelector('.next');
+    const step = () => cards[0].offsetWidth + 12;
+    if (prev) prev.addEventListener('click', () => car.scrollBy({left:-step(), behavior:'smooth'}));
+    if (next) next.addEventListener('click', () => car.scrollBy({left: step(), behavior:'smooth'}));
     car.addEventListener('scroll', () => requestAnimationFrame(upd), {passive:true});
     upd();
   });
@@ -514,7 +571,7 @@ const VIDEOS=[[1,"WJ6_9mnHIkc",0],[2,"0nHnNeCw398",0],[3,"2Fhg6c3jlT0",0],[4,"gi
     el.target = '_blank'; el.rel = 'noopener';
     el.setAttribute('aria-label','第 ' + v[0] + ' 集' + (bw ? '，禁忌的一集' : ''));
     if (bw) el.id = 'ep23';
-    el.innerHTML = '<img loading="lazy" decoding="async" alt="" src="' + src(v) + '"><span class="n">#' + v[0] + '</span>' + (bw ? '<span class="stamp"><b>禁忌的一集</b></span>' : '');
+    el.innerHTML = '<img loading="lazy" decoding="async" alt="" src="' + src(v) + '"><span class="n">#' + v[0] + '</span>' + (bw ? '<span class="veil">#' + v[0] + '</span><span class="stamp"><b>禁忌的一集</b></span>' : '');
     frag.appendChild(el);
   });
   grid.appendChild(frag);
@@ -580,15 +637,21 @@ const VIDEOS=[[1,"WJ6_9mnHIkc",0],[2,"0nHnNeCw398",0],[3,"2Fhg6c3jlT0",0],[4,"gi
 
   // #23 moment in the wall
   const ep = document.getElementById('ep23');
+  const canHover = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!canHover){
+    let t23;
+    ep.addEventListener('click', e => { if (!ep.classList.contains('hit')){ e.preventDefault(); ep.classList.add('hit'); clearTimeout(t23); t23 = setTimeout(() => ep.classList.remove('hit'), 3000); } });
+    document.addEventListener('click', e => { if (!ep.contains(e.target)) ep.classList.remove('hit'); });
+  }
   const wt = document.getElementById('wallText');
   let flipped = false;
   const io23 = new IntersectionObserver(entries => {
     entries.forEach(en => {
-      ep.classList.toggle('hit', en.isIntersecting);
+      if (!en.isIntersecting) ep.classList.remove('hit');
       if (en.isIntersecting && !flipped){
         flipped = true;
         wt.style.opacity = 0;
-        setTimeout(() => { wt.innerHTML = '<h2 class="sticker lime">115 支…… 其實是 116 支</h2><p>加起來約 47.6 小時</p>'; wt.style.opacity = 1; }, 250);
+        setTimeout(() => { wt.innerHTML = '<h2 class="sticker lime">115 支……<br>其實是 116 支</h2><p>加起來約 47.6 小時</p>'; wt.style.opacity = 1; }, 250);
       }
     });
   }, {rootMargin: '-35% 0px -35% 0px', threshold: 0});
